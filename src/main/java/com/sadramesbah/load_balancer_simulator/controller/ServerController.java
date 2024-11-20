@@ -26,21 +26,21 @@ public class ServerController {
   @GetMapping("/start-tasks")
   public String startTasks(Model model) {
     List<Task> tasks = new ArrayList<>();
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 3; i++) {
       tasks.add(new Task());
     }
 
     for (Task task : tasks) {
       serverService.handleTaskInServer(task);
       try {
-        Thread.sleep(500); // half a second delay
+        Thread.sleep(100); // half a second delay
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
         throw new IllegalStateException("Task execution interrupted", e);
       }
 
       // check if elapsedTime is greater than requiredTime
-      if (task.getElapsedTime(Instant.now()).toMillis() > task.getTimeRequired()) {
+      if (task.getElapsedTime(Instant.now()).toMillis() > task.getTimeRequiredInMilliseconds()) {
         serverService.finishTaskInServer(task.getAssignedServerId(), task);
       }
 

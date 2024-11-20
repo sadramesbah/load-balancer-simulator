@@ -21,9 +21,9 @@ public class ServerService {
   public ServerService() {
     this.servers = new HashMap<>();
     // servers initialization
-    this.servers.put(1, new Server(1, 4, 2, 8));
-    this.servers.put(2, new Server(2, 8, 4, 16));
-    this.servers.put(3, new Server(3, 12, 6, 32));
+    this.servers.put(1, new Server(1, 4, 2, 8000));
+    this.servers.put(2, new Server(2, 8, 4, 16000));
+    this.servers.put(3, new Server(3, 12, 6, 32000));
     logger.info("ServerService initialized with " + servers.size() + " servers.");
   }
 
