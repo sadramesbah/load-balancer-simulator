@@ -15,6 +15,7 @@ public class Task {
   private int ramRequired;
   private int timeRequired;
   private Instant startTime;
+  private int assignedServerId;
 
   public Task(int highPerformanceCoresRequired, int lowPerformanceCoresRequired, int ramRequired,
       int timeRequired) {
@@ -22,7 +23,8 @@ public class Task {
     this.lowPerformanceCoresRequired = lowPerformanceCoresRequired;
     this.ramRequired = ramRequired;
     this.timeRequired = timeRequired;
-    this.startTime = null; // Indicates that the task has not started yet
+    this.startTime = null; // indicates the task has not started yet
+    this.assignedServerId = -1; // indicates the task has not been assigned to a server yet
   }
 
   // constructor for randomly generating the task
@@ -32,6 +34,7 @@ public class Task {
     this.lowPerformanceCoresRequired = random.nextInt(2) + 1;
     this.ramRequired = random.nextInt(4) + 1;
     this.timeRequired = random.nextInt(60000) + 1;
+    this.assignedServerId = -1; // indicates the task has not been assigned to a server yet
   }
 
   // getters and setters
@@ -73,6 +76,14 @@ public class Task {
 
   public void setStartTime(Instant startTime) {
     this.startTime = startTime;
+  }
+
+  public int getAssignedServerId() {
+    return assignedServerId;
+  }
+
+  public void setAssignedServerId(int assignedServerId) {
+    this.assignedServerId = assignedServerId;
   }
 
   // sets the start time to the current time

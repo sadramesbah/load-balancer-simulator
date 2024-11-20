@@ -9,6 +9,7 @@ public class Server {
 
   private static final Logger logger = LogManager.getLogger(Server.class);
 
+  private int serverId;
   private int highPerformanceCores;
   private int lowPerformanceCores;
   private int totalRam;
@@ -20,7 +21,8 @@ public class Server {
   public Server() {
   }
 
-  public Server(int highPerformanceCores, int lowPerformanceCores, int totalRam) {
+  public Server(int serverId, int highPerformanceCores, int lowPerformanceCores, int totalRam) {
+    this.serverId = serverId;
     this.highPerformanceCores = highPerformanceCores;
     this.lowPerformanceCores = lowPerformanceCores;
     this.totalRam = totalRam;
@@ -29,7 +31,15 @@ public class Server {
     this.ramInUse = 0;
   }
 
-  // Getters and Setters
+  // getters and setters
+  public int getServerId() {
+    return serverId;
+  }
+
+  public void setServerId(int serverId) {
+    this.serverId = serverId;
+  }
+
   public int getHighPerformanceCores() {
     return highPerformanceCores;
   }
@@ -89,12 +99,13 @@ public class Server {
   }
 
   // assigns resources to the task and starts it
-  public void handleTask(Task task) {
+  public void handleTask(int serverId, Task task) {
     if (canHandleTask(task)) {
       highPerformanceCoresInUse += task.getHighPerformanceCoresRequired();
       lowPerformanceCoresInUse += task.getLowPerformanceCoresRequired();
       ramInUse += task.getRamRequired();
       task.startTask();
+      task.setAssignedServerId(serverId);
       tasksInProcess.add(task);
       logger.info("Task started: {}", task);
     } else {
@@ -110,6 +121,7 @@ public class Server {
       highPerformanceCoresInUse -= task.getHighPerformanceCoresRequired();
       lowPerformanceCoresInUse -= task.getLowPerformanceCoresRequired();
       ramInUse -= task.getRamRequired();
+      task.setAssignedServerId(-1);
       tasksInProcess.remove(task);
       logger.info("Task finished: {}", task);
     } else {

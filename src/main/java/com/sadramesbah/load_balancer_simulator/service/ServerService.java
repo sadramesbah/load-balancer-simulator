@@ -21,9 +21,9 @@ public class ServerService {
   public ServerService() {
     this.servers = new HashMap<>();
     // servers initialization
-    this.servers.put(1, new Server(4, 2, 8));
-    this.servers.put(2, new Server(8, 4, 16));
-    this.servers.put(3, new Server(12, 6, 32));
+    this.servers.put(1, new Server(1, 4, 2, 8));
+    this.servers.put(2, new Server(2, 8, 4, 16));
+    this.servers.put(3, new Server(3, 12, 6, 32));
     logger.info("ServerService initialized with " + servers.size() + " servers.");
   }
 
@@ -45,7 +45,7 @@ public class ServerService {
     Optional<Server> optionalServer = Optional.ofNullable(servers.get(serverId));
     optionalServer.ifPresentOrElse(
         server -> {
-          server.handleTask(task);
+          server.handleTask(serverId, task);
           logger.info("Task handled by server with ID: {}", serverId);
         },
         () -> {

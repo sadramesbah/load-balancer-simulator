@@ -5,6 +5,7 @@ import com.sadramesbah.load_balancer_simulator.service.ServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import java.time.Instant;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
@@ -32,11 +33,17 @@ public class ServerController {
     for (Task task : tasks) {
       serverService.handleTaskInServer(task);
       try {
-        Thread.sleep(1000); // 1-second delay
+        Thread.sleep(500); // half a second delay
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
         throw new IllegalStateException("Task execution interrupted", e);
       }
+
+      // check if elapsedTime is greater than requiredTime
+      if (task.getElapsedTime(Instant.now()).toMillis() > task.getTimeRequired()) {
+        serverService.finishTaskInServer(task.getAssignedServerId(), task);
+      }
+
       model.addAttribute("servers", serverService.getAllServers().values());
     }
 
