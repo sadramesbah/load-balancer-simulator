@@ -98,12 +98,15 @@ public class Task {
   }
 
   // calculates the elapsed time given a future timestamp
-  public Duration getElapsedTime(Instant futureTime) {
+  public Duration getElapsedTime(Instant currentTime) {
+    Duration elapsedTime;
     if (startTime == null) {
-      throw new IllegalStateException("Task has not been started yet!");
+      logger.info("Task has not started yet! Task: {}", this);
+      elapsedTime = Duration.ZERO;
+    } else {
+      elapsedTime = Duration.between(startTime, currentTime);
+      logger.info("Elapsed time: {} milliseconds", elapsedTime.toMillis());
     }
-    Duration elapsedTime = Duration.between(startTime, futureTime);
-    logger.info("Elapsed time: {} milliseconds", elapsedTime.toMillis());
     return elapsedTime;
   }
 }
