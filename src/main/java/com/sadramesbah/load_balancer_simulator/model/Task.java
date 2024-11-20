@@ -2,6 +2,7 @@ package com.sadramesbah.load_balancer_simulator.model;
 
 import java.time.Instant;
 import java.time.Duration;
+import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,6 +23,15 @@ public class Task {
     this.ramRequired = ramRequired;
     this.timeRequired = timeRequired;
     this.startTime = null; // Indicates that the task has not started yet
+  }
+
+  // constructor for randomly generating the task
+  public Task() {
+    Random random = new Random();
+    this.highPerformanceCoresRequired = random.nextInt(4) + 1;
+    this.lowPerformanceCoresRequired = random.nextInt(2) + 1;
+    this.ramRequired = random.nextInt(4) + 1;
+    this.timeRequired = random.nextInt(60000) + 1;
   }
 
   // getters and setters
