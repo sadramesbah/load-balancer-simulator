@@ -88,6 +88,14 @@ public class Server {
     this.ramInUse = ramInUse;
   }
 
+  public List<Task> getTasksInProcess() {
+    return tasksInProcess;
+  }
+
+  public void setTasksInProcess(List<Task> tasksInProcess) {
+    this.tasksInProcess = tasksInProcess;
+  }
+
   // checks if current instance of server can handle the task
   private boolean canHandleTask(Task task) {
     return
