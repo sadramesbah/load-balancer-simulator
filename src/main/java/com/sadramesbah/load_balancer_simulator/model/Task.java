@@ -12,17 +12,18 @@ public class Task {
 
   private int highPerformanceCoresRequired;
   private int lowPerformanceCoresRequired;
-  private int ramRequired;
-  private int timeRequired;
+  private int ramRequiredInMegabytes;
+  private int timeRequiredInMilliseconds;
   private Instant startTime;
   private int assignedServerId;
 
-  public Task(int highPerformanceCoresRequired, int lowPerformanceCoresRequired, int ramRequired,
-      int timeRequired) {
+  public Task(int highPerformanceCoresRequired, int lowPerformanceCoresRequired,
+      int ramRequiredInMegabytes,
+      int timeRequiredInMilliseconds) {
     this.highPerformanceCoresRequired = highPerformanceCoresRequired;
     this.lowPerformanceCoresRequired = lowPerformanceCoresRequired;
-    this.ramRequired = ramRequired;
-    this.timeRequired = timeRequired;
+    this.ramRequiredInMegabytes = ramRequiredInMegabytes;
+    this.timeRequiredInMilliseconds = timeRequiredInMilliseconds;
     this.startTime = null; // indicates the task has not started yet
     this.assignedServerId = -1; // indicates the task has not been assigned to a server yet
   }
@@ -30,11 +31,16 @@ public class Task {
   // constructor for randomly generating the task
   public Task() {
     Random random = new Random();
-    this.highPerformanceCoresRequired = random.nextInt(4) + 1;
+    // okay to allocate no high-performance cores
+    this.highPerformanceCoresRequired = random.nextInt(2);
+    // allocates at least 1 low-performance core
     this.lowPerformanceCoresRequired = random.nextInt(2) + 1;
-    this.ramRequired = random.nextInt(4) + 1;
-    this.timeRequired = random.nextInt(60000) + 1;
-    this.assignedServerId = -1; // indicates the task has not been assigned to a server yet
+    // allocates 1 to 1500 MB of RAM
+    this.ramRequiredInMegabytes = random.nextInt(1500) + 1;
+    // assigns 1 to 60000 milliseconds (1 minute) of time
+    this.timeRequiredInMilliseconds = random.nextInt(60000) + 1;
+    // indicates the task has not been assigned to a server yet
+    this.assignedServerId = -1;
   }
 
   // getters and setters
@@ -54,20 +60,20 @@ public class Task {
     this.lowPerformanceCoresRequired = lowPerformanceCoresRequired;
   }
 
-  public int getRamRequired() {
-    return ramRequired;
+  public int getRamRequiredInMegabytes() {
+    return ramRequiredInMegabytes;
   }
 
-  public void setRamRequired(int ramRequired) {
-    this.ramRequired = ramRequired;
+  public void setRamRequiredInMegabytes(int ramRequiredInMegabytes) {
+    this.ramRequiredInMegabytes = ramRequiredInMegabytes;
   }
 
-  public int getTimeRequired() {
-    return timeRequired;
+  public int getTimeRequiredInMilliseconds() {
+    return timeRequiredInMilliseconds;
   }
 
-  public void setTimeRequired(int timeRequired) {
-    this.timeRequired = timeRequired;
+  public void setTimeRequiredInMilliseconds(int timeRequiredInMilliseconds) {
+    this.timeRequiredInMilliseconds = timeRequiredInMilliseconds;
   }
 
   public Instant getStartTime() {
