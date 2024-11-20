@@ -12,28 +12,20 @@
   <thead>
   <tr>
     <th>Server ID</th>
-    <th>High Performance Cores</th>
-    <th>Low Performance Cores</th>
-    <th>Total RAM</th>
     <th>High Performance Cores In Use</th>
     <th>Low Performance Cores In Use</th>
-    <th>RAM In Use</th>
+    <th>RAM In Use (MB)</th>
     <th>Tasks In Process</th>
   </tr>
   </thead>
   <tbody>
-  <tr th:each="server : ${servers}">
+  <tr th:each="server : ${servers}" th:class="${serverStat.index % 2 == 0} ? 'even' : 'odd'">
     <td th:text="${server.serverId}"></td>
-    <td th:text="${server.highPerformanceCores}"></td>
-    <td th:text="${server.lowPerformanceCores}"></td>
-    <td th:text="${server.totalRam}"></td>
-    <td th:text="${server.highPerformanceCoresInUse}"></td>
-    <td th:text="${server.lowPerformanceCoresInUse}"></td>
-    <td th:text="${server.ramInUse}"></td>
+    <td th:text="${server.highPerformanceCoresInUse} + ' out of ' + ${server.highPerformanceCores}"></td>
+    <td th:text="${server.lowPerformanceCoresInUse} + ' out of ' + ${server.lowPerformanceCores}"></td>
+    <td th:text="${server.ramInUse} + ' out of ' + ${server.totalRam}"></td>
     <td>
-      <ul>
-        <li th:each="task : ${server.tasksInProcess}" th:text="${task}"></li>
-      </ul>
+      <p th:text="${server.tasksInProcess.size()}"></p>
     </td>
   </tr>
   </tbody>

@@ -1,0 +1,48 @@
+body {
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
+}
+
+h1 {
+  font-size: 24px;
+  text-align: center;
+}
+
+table {
+  width: 80%;
+  border-collapse: collapse;
+  margin: 20px auto; /* Center-align the table */
+}
+
+th {
+  padding: 10px;
+  text-align: center; /* Center-align text in table headers */
+  height: 50px; /* Increase the height of the header row */
+}
+
+td {
+  padding: 10px;
+  text-align: center; /* Center-align text in table cells */
+  height: 30px; /* Decrease the height of the information rows */
+}
+
+thead {
+  background-color: #add8e6; /* Light blue */
+}
+
+tbody tr.even {
+  background-color: #f2f2f2; /* Light grey */
+}
+
+tbody tr.odd {
+  background-color: #ffffff; /* White */
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li {
+  margin: 5px 0;
+}
