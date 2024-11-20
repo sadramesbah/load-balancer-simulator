@@ -108,8 +108,9 @@ public class Server {
   }
 
   // assigns resources to the task and starts it
-  public void handleTask(int serverId, Task task) {
-    if (canHandleTask(task)) {
+  public boolean handleTask(int serverId, Task task) {
+    boolean canHandle = canHandleTask(task);
+    if (canHandle) {
       highPerformanceCoresInUse += task.getHighPerformanceCoresRequired();
       lowPerformanceCoresInUse += task.getLowPerformanceCoresRequired();
       ramInUseInMegabytes += task.getRamRequiredInMegabytes();
@@ -118,10 +119,12 @@ public class Server {
       tasksInProcess.add(task);
       logger.info("Task started: {}", task);
     } else {
-      logger.error("Server cannot handle the task due to insufficient resources: {}", task);
-      throw new IllegalStateException(
-          "Server cannot handle the task due to insufficient resources.");
+      logger.error("Server {} cannot handle the task due to insufficient resources. Task: {}",
+          serverId, task);
+      logger.info("Task will be assigned to the next available server. {}", task);
     }
+
+    return canHandle;
   }
 
   // finishes the task and releases the resources

@@ -45,11 +45,16 @@ public class ServerService {
     Optional<Server> optionalServer = Optional.ofNullable(servers.get(serverId));
     optionalServer.ifPresentOrElse(
         server -> {
-          server.handleTask(serverId, task);
-          logger.info("Task handled by server with ID: {}", serverId);
+          boolean handled = server.handleTask(serverId, task);
+          if (handled) {
+            logger.info("Task successfully handled by server {}", serverId);
+          } else {
+            logger.warn("Server {} could not handle the task due to insufficient resources.",
+                serverId);
+          }
         },
         () -> {
-          logger.error("Server with ID {} not found. Cannot handle task.", serverId);
+          logger.error("Server {} not found. Cannot handle the task.", serverId);
           throw new IllegalArgumentException("Server with ID " + serverId + " not found.");
         }
     );
@@ -61,7 +66,7 @@ public class ServerService {
     optionalServer.ifPresentOrElse(
         server -> {
           server.finishTask(task);
-          logger.info("Task finished by server with ID: {}", serverId);
+          logger.info("Task finished by server {}", serverId);
         },
         () -> {
           logger.error("Server with ID {} not found. Cannot finish task.", serverId);
