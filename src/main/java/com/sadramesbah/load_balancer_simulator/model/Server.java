@@ -99,20 +99,51 @@ public class Server {
 
   // checks if current instance of server can handle the task
   private boolean canHandleTask(Task task) {
-    return
-        task.getHighPerformanceCoresRequired() <=
-            (highPerformanceCores - highPerformanceCoresInUse) &&
-            task.getLowPerformanceCoresRequired() <=
-                (lowPerformanceCores - lowPerformanceCoresInUse) &&
-            task.getRamRequiredInMegabytes() <= (totalRamInMegabytes - ramInUseInMegabytes);
+    int availableHighPerformanceCores = highPerformanceCores - highPerformanceCoresInUse;
+    int availableLowPerformanceCores = lowPerformanceCores - lowPerformanceCoresInUse;
+
+    // checks if the server can handle the high-performance core requirements
+    boolean canHandleHighPerformanceCores =
+        task.getHighPerformanceCoresRequired() <= availableHighPerformanceCores;
+
+    // checks if the server can handle the high-performance core requirements.
+    // It is allowed to use high-performance cores to handle low-performance core requirements
+    // if and only if there are no available low-performance cores
+    boolean canHandleLowPerformanceCores =
+        task.getLowPerformanceCoresRequired() <= (availableLowPerformanceCores
+            + availableHighPerformanceCores);
+
+    // checks if the server can handle the RAM requirements
+    boolean canHandleRam =
+        task.getRamRequiredInMegabytes() <= (totalRamInMegabytes - ramInUseInMegabytes);
+
+    return canHandleHighPerformanceCores && canHandleLowPerformanceCores && canHandleRam;
   }
 
   // assigns resources to the task and starts it
   public boolean handleTask(int serverId, Task task) {
     boolean canHandle = canHandleTask(task);
+
     if (canHandle) {
+      int requiredLowPerformanceCores = task.getLowPerformanceCoresRequired();
+      int availableLowPerformanceCores = lowPerformanceCores - lowPerformanceCoresInUse;
+      int requiredNonAvailableLowPerformanceCores =
+          requiredLowPerformanceCores - availableLowPerformanceCores;
+
+      if (requiredNonAvailableLowPerformanceCores <= 0) {
+        lowPerformanceCoresInUse += requiredLowPerformanceCores;
+        task.setAssignedLowPerformanceCores(requiredLowPerformanceCores);
+      } else {
+        logger.info(
+            "Allocating {} high-performance core(s) to low-performance task requirements in Server {}",
+            requiredNonAvailableLowPerformanceCores, serverId);
+        lowPerformanceCoresInUse += availableLowPerformanceCores;
+        highPerformanceCoresInUse += requiredNonAvailableLowPerformanceCores;
+        task.setAssignedLowPerformanceCores(availableLowPerformanceCores);
+        task.setAssignedHighPerformanceCores(requiredNonAvailableLowPerformanceCores);
+      }
+
       highPerformanceCoresInUse += task.getHighPerformanceCoresRequired();
-      lowPerformanceCoresInUse += task.getLowPerformanceCoresRequired();
       ramInUseInMegabytes += task.getRamRequiredInMegabytes();
       task.startTask();
       task.setAssignedServerId(serverId);
@@ -121,7 +152,6 @@ public class Server {
     } else {
       logger.error("Server {} cannot handle the task due to insufficient resources. Task: {}",
           serverId, task);
-      logger.info("Task will be assigned to the next available server. {}", task);
     }
 
     return canHandle;
@@ -130,8 +160,8 @@ public class Server {
   // finishes the task and releases the resources
   public void finishTask(Task task) {
     if (tasksInProcess.contains(task)) {
-      highPerformanceCoresInUse -= task.getHighPerformanceCoresRequired();
-      lowPerformanceCoresInUse -= task.getLowPerformanceCoresRequired();
+      highPerformanceCoresInUse -= task.getAssignedHighPerformanceCores();
+      lowPerformanceCoresInUse -= task.getAssignedLowPerformanceCores();
       ramInUseInMegabytes -= task.getRamRequiredInMegabytes();
       task.setAssignedServerId(-1);
       tasksInProcess.remove(task);
