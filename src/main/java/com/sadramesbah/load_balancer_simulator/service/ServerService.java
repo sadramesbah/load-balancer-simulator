@@ -20,12 +20,23 @@ public class ServerService {
 
   public ServerService() {
     this.servers = new HashMap<>();
-    // servers initialization
-    this.servers.put(1, new Server(1, 8, 4, 16000));
-    this.servers.put(2, new Server(2, 8, 4, 16000));
-    this.servers.put(3, new Server(3, 12, 6, 32000));
-    this.servers.put(4, new Server(4, 12, 6, 32000));
+    initializeServers();
     logger.info("ServerService initialized with {} servers.", servers.size());
+  }
+
+  private void initializeServers() {
+    addServer(1, 8, 4, 16000);
+    addServer(2, 8, 4, 16000);
+    addServer(3, 8, 4, 16000);
+    addServer(4, 12, 6, 32000);
+    addServer(5, 12, 6, 32000);
+    addServer(6, 12, 6, 32000);
+  }
+
+  private void addServer(int serverId, int highPerformanceCores, int lowPerformanceCores,
+      int ramInMegaBytes) {
+    servers.put(serverId,
+        new Server(serverId, highPerformanceCores, lowPerformanceCores, ramInMegaBytes));
   }
 
   public Optional<Server> getServer(int serverId) {
@@ -79,5 +90,10 @@ public class ServerService {
   // returns all servers
   public Map<Integer, Server> getAllServers() {
     return servers;
+  }
+
+  // creates a task with random attributes
+  public Task createRandomTask() {
+    return new Task();
   }
 }

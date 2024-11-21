@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Server Statistics</title>
   <link rel="stylesheet" th:href="@{/static/styles.css}">
+  <script>
+    function createTask() {
+      fetch('/create-task', { method: 'POST' })
+        .then(response => {
+          if (response.ok) {
+            location.reload();
+          } else {
+            console.error('Failed to create task');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+  </script>
 </head>
 <body>
 <h1>Server Statistics</h1>
@@ -30,5 +43,9 @@
   </tr>
   </tbody>
 </table>
+<button onclick="createTask()">Create Task & Assign to Server</button>
+<footer>
+  &copy; 2024 Load Balancer Simulator
+</footer>
 </body>
 </html>
