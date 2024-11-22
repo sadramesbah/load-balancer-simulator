@@ -1,7 +1,12 @@
 package com.sadramesbah.load_balancer_simulator.model;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,6 +22,7 @@ public class Server {
   private int lowPerformanceCoresInUse;
   private int ramInUseInMegabytes;
   private List<Task> tasksInProcess = new ArrayList<>();
+  private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
   public Server() {
   }
@@ -30,6 +36,7 @@ public class Server {
     this.highPerformanceCoresInUse = 0;
     this.lowPerformanceCoresInUse = 0;
     this.ramInUseInMegabytes = 0;
+    startScheduler();
   }
 
   // getters and setters
@@ -95,6 +102,28 @@ public class Server {
 
   public void setTasksInProcess(List<Task> tasksInProcess) {
     this.tasksInProcess = tasksInProcess;
+  }
+
+  // calls checkTasksElapsedTime every 1000 milliseconds
+  private void startScheduler() {
+    scheduler.scheduleAtFixedRate(this::checkTasksElapsedTime, 0, 1000, TimeUnit.MILLISECONDS);
+  }
+
+  // checks if any task has exceeded the time limit and if so terminates it
+  private void checkTasksElapsedTime() {
+    Instant currentTime = Instant.now();
+    List<Task> tasksToTerminate = new ArrayList<>();
+    for (Task task : tasksInProcess) {
+      Duration elapsedTime = Duration.between(task.getStartTime(), currentTime);
+      if (elapsedTime.toMillis() >= task.getTimeRequiredInMilliseconds()) {
+        tasksToTerminate.add(task);
+      }
+    }
+
+    for (Task task : tasksToTerminate) {
+      finishTask(task);
+      logger.info("Task {} terminated on server {} due to timeout", task, serverId);
+    }
   }
 
   // checks if current instance of server can handle the task

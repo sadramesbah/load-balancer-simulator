@@ -39,10 +39,10 @@ public class Task {
     this.highPerformanceCoresRequired = random.nextInt(2);
     // allocates at least 1 low-performance core
     this.lowPerformanceCoresRequired = random.nextInt(2) + 1;
-    // allocates 1 to 1500 MB of RAM
-    this.ramRequiredInMegabytes = random.nextInt(1500) + 1;
-    // assigns 1 to 60000 milliseconds (1 minute) of time
-    this.timeRequiredInMilliseconds = random.nextInt(500) + 1;
+    // allocates 50 to 2000 MB of RAM
+    this.ramRequiredInMegabytes = random.nextInt(2000) + 50;
+    // assigns 1000 to 15000 milliseconds (15 seconds) of time to complete the task
+    this.timeRequiredInMilliseconds = random.nextInt(30000) + 1000;
     // indicates the task has not been assigned to a server yet
     this.assignedServerId = -1;
     this.assignedHighPerformanceCores = 0;
