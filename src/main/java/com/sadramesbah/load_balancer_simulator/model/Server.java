@@ -110,7 +110,7 @@ public class Server {
   }
 
   // checks if any task has exceeded the time limit and if so terminates it
-  private void checkTasksElapsedTime() {
+  protected void checkTasksElapsedTime() {
     Instant currentTime = Instant.now();
     List<Task> tasksToTerminate = new ArrayList<>();
     for (Task task : tasksInProcess) {
@@ -127,7 +127,7 @@ public class Server {
   }
 
   // checks if current instance of server can handle the task
-  private boolean canHandleTask(Task task) {
+  protected boolean canHandleTask(Task task) {
     int availableHighPerformanceCores = highPerformanceCores - highPerformanceCoresInUse;
     int availableLowPerformanceCores = lowPerformanceCores - lowPerformanceCoresInUse;
 
@@ -140,7 +140,7 @@ public class Server {
     // if and only if there are no available low-performance cores
     boolean canHandleLowPerformanceCores =
         task.getLowPerformanceCoresRequired() <= (availableLowPerformanceCores
-            + availableHighPerformanceCores);
+            + availableHighPerformanceCores - task.getHighPerformanceCoresRequired());
 
     // checks if the server can handle the RAM requirements
     boolean canHandleRam =
@@ -173,6 +173,8 @@ public class Server {
       }
 
       highPerformanceCoresInUse += task.getHighPerformanceCoresRequired();
+      task.setAssignedHighPerformanceCores(
+          task.getAssignedHighPerformanceCores() + task.getHighPerformanceCoresRequired());
       ramInUseInMegabytes += task.getRamRequiredInMegabytes();
       task.startTask();
       task.setAssignedServerId(serverId);
