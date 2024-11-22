@@ -62,17 +62,73 @@ class ServerTest {
   }
 
   @Test
-  void testCheckTasksElapsedTime() throws InterruptedException {
+  void testCheckTasksElapsedTimeOnSchedule() throws InterruptedException {
     server.handleTask(1, task1);
     assertEquals(2, server.getHighPerformanceCoresInUse());
     assertEquals(1, server.getLowPerformanceCoresInUse());
     assertEquals(512, server.getRamInUse());
     assertEquals(1, task1.getAssignedServerId());
-    // Wait for the task to exceed its time limit and be terminated by the server
-    Thread.sleep(1250);
+    // wait for the task to exceed its time limit and be terminated by the server
+    Thread.sleep(1500);
     assertEquals(0, server.getHighPerformanceCoresInUse());
     assertEquals(0, server.getLowPerformanceCoresInUse());
     assertEquals(0, server.getRamInUse());
     assertEquals(-1, task1.getAssignedServerId());
+  }
+
+  @Test
+  void testHandleMultipleTasks() {
+    assertTrue(server.handleTask(1, task1));
+    assertTrue(server.handleTask(1, task2));
+    assertEquals(3, server.getHighPerformanceCoresInUse());
+    assertEquals(3, server.getLowPerformanceCoresInUse());
+    assertEquals(1536, server.getRamInUse());
+  }
+
+  @Test
+  void testFinishMultipleTasks() {
+    server.handleTask(1, task1);
+    server.handleTask(1, task2);
+    assertEquals(3, server.getHighPerformanceCoresInUse());
+    assertEquals(3, server.getLowPerformanceCoresInUse());
+    assertEquals(1536, server.getRamInUse());
+    server.finishTask(task1);
+    assertEquals(1, server.getHighPerformanceCoresInUse());
+    assertEquals(2, server.getLowPerformanceCoresInUse());
+    assertEquals(1024, server.getRamInUse());
+    server.finishTask(task2);
+    assertEquals(0, server.getHighPerformanceCoresInUse());
+    assertEquals(0, server.getLowPerformanceCoresInUse());
+    assertEquals(0, server.getRamInUse());
+  }
+
+  @Test
+  void testFinishMultipleTasksOnSchedule() throws InterruptedException {
+    server.handleTask(1, task1);
+    server.handleTask(1, task2);
+    assertEquals(3, server.getHighPerformanceCoresInUse());
+    assertEquals(3, server.getLowPerformanceCoresInUse());
+    assertEquals(1536, server.getRamInUse());
+    // wait for task1 to exceed its time limit and be terminated by the server
+    Thread.sleep(1500);
+    assertEquals(1, server.getHighPerformanceCoresInUse());
+    assertEquals(2, server.getLowPerformanceCoresInUse());
+    assertEquals(1024, server.getRamInUse());
+    // wait for task2 to exceed its time limit and be terminated by the server
+    Thread.sleep(1500);
+    assertEquals(0, server.getHighPerformanceCoresInUse());
+    assertEquals(0, server.getLowPerformanceCoresInUse());
+    assertEquals(0, server.getRamInUse());
+  }
+
+  @Test
+  void testHandleTaskWithLowPerformanceCoresAssignedToHighPerformance() {
+    Task lowPerformanceTask = new Task(0, 5, 512, 1000);
+    assertTrue(server.handleTask(1, lowPerformanceTask));
+    // 1 high-performance core used for low-performance task
+    assertEquals(1, server.getHighPerformanceCoresInUse());
+    assertEquals(4, server.getLowPerformanceCoresInUse());
+    assertEquals(512, server.getRamInUse());
+    assertEquals(1, lowPerformanceTask.getAssignedServerId());
   }
 }
