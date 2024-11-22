@@ -41,7 +41,7 @@ public class Task {
     this.lowPerformanceCoresRequired = random.nextInt(2) + 1;
     // allocates 50 to 2000 MB of RAM
     this.ramRequiredInMegabytes = random.nextInt(2000) + 50;
-    // assigns 1000 to 15000 milliseconds (15 seconds) of time to complete the task
+    // assigns 1000 to 30000 milliseconds (1 to 30 seconds) of time to complete the task
     this.timeRequiredInMilliseconds = random.nextInt(30000) + 1000;
     // indicates the task has not been assigned to a server yet
     this.assignedServerId = -1;
