@@ -1,10 +1,10 @@
-# Load Balancer Simulator
+# 🎛️ Load Balancer Simulator
 
-### About
+## 📖 About
 
-This project is a Spring Boot application that simulates load balancing across multiple servers with configurable CPU and RAM resources. It provides a framework for understanding and testing load balancing algorithms and strategies. The application includes a web interface to monitor server utilization and task distribution.
+This project is a **Spring Boot** application that simulates load balancing across multiple servers with configurable CPU and RAM resources. It provides a framework for understanding and testing load balancing algorithms and strategies. The application includes a web interface to monitor server utilization and task distribution.
 
-#### Key Features
+## ✨ Key Features
 
 - **Server Management**: Dynamically create, add, remove, and manage servers with configurable resources.
 - **Task Handling**: Efficiently assign tasks to servers based on available resources and handle task completion.
@@ -12,14 +12,14 @@ This project is a Spring Boot application that simulates load balancing across m
 - **Monitoring**: Web interface to monitor server utilization and task distribution.
 - **JUnit Testing**: Comprehensive unit tests to ensure the reliability and correctness of server/task management functionalities.
 
-#### Technologies
+## 🛠️ Technologies
 
 - **Java**: The primary programming language used for the development of the simulator.
 - **Spring Boot**: Framework for building the application.
 - **Spring MVC**: Framework for building the web interface.
 - **Maven**: Build automation tool for managing project dependencies and building the project.
 
-#### Project Structure
+## 🗂️ Project Structure
 
 - **Model**: Contains the core classes representing servers and tasks.
 - **Service**: Includes the `ServerService` class responsible for managing servers and handling tasks.
@@ -27,7 +27,7 @@ This project is a Spring Boot application that simulates load balancing across m
 - **View**: Includes the HTML, CSS, and JavaScript files for the web interface.
 - **Tests**: JUnit test cases to validate the functionality of the service layer.
 
-#### Getting Started
+## 🚀 Getting Started
 
 1. **Clone the repository**:
     ```sh
@@ -48,6 +48,6 @@ This project is a Spring Boot application that simulates load balancing across m
 4. **Access the web interface**:
    Open your browser and navigate to `http://localhost:8080/server-stats` to create tasks and monitor server utilization and task distribution.
 
-#### License
+## 📜 License
 
-This project is licensed under the GNU General Public License. See the `LICENSE` file for more details.
+This project is licensed under the **GNU General Public License**. See the `LICENSE` file for more details.
