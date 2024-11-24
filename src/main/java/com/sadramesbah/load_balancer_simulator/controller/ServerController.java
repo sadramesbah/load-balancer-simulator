@@ -11,8 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class ServerController {
 
+  private final ServerService serverService;
+
   @Autowired
-  private ServerService serverService;
+  public ServerController(ServerService serverService) {
+    this.serverService = serverService;
+  }
 
   @GetMapping("/server-stats")
   public ModelAndView getStats() {

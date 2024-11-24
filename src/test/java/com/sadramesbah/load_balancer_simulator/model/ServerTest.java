@@ -1,5 +1,7 @@
 package com.sadramesbah.load_balancer_simulator.model;
 
+import java.util.concurrent.TimeUnit;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -62,14 +64,15 @@ class ServerTest {
   }
 
   @Test
-  void testCheckTasksElapsedTimeOnSchedule() throws InterruptedException {
+  void testCheckTasksElapsedTimeOnSchedule() {
     server.handleTask(1, task1);
     assertEquals(2, server.getHighPerformanceCoresInUse());
     assertEquals(1, server.getLowPerformanceCoresInUse());
     assertEquals(512, server.getRamInUse());
     assertEquals(1, task1.getAssignedServerId());
     // wait for the task to exceed its time limit and be terminated by the server
-    Thread.sleep(1500);
+    Awaitility.await().atMost(1500, TimeUnit.MILLISECONDS)
+        .until(() -> task1.getAssignedServerId() == -1);
     assertEquals(0, server.getHighPerformanceCoresInUse());
     assertEquals(0, server.getLowPerformanceCoresInUse());
     assertEquals(0, server.getRamInUse());
@@ -103,19 +106,21 @@ class ServerTest {
   }
 
   @Test
-  void testFinishMultipleTasksOnSchedule() throws InterruptedException {
+  void testFinishMultipleTasksOnSchedule() {
     server.handleTask(1, task1);
     server.handleTask(1, task2);
     assertEquals(3, server.getHighPerformanceCoresInUse());
     assertEquals(3, server.getLowPerformanceCoresInUse());
     assertEquals(1536, server.getRamInUse());
     // wait for task1 to exceed its time limit and be terminated by the server
-    Thread.sleep(1500);
+    Awaitility.await().atMost(1500, TimeUnit.MILLISECONDS)
+        .until(() -> task1.getAssignedServerId() == -1);
     assertEquals(1, server.getHighPerformanceCoresInUse());
     assertEquals(2, server.getLowPerformanceCoresInUse());
     assertEquals(1024, server.getRamInUse());
     // wait for task2 to exceed its time limit and be terminated by the server
-    Thread.sleep(1500);
+    Awaitility.await().atMost(1500, TimeUnit.MILLISECONDS)
+        .until(() -> task2.getAssignedServerId() == -1);
     assertEquals(0, server.getHighPerformanceCoresInUse());
     assertEquals(0, server.getLowPerformanceCoresInUse());
     assertEquals(0, server.getRamInUse());

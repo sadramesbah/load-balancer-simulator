@@ -15,6 +15,8 @@ import java.util.Map;
 public class ServerService {
 
   private static final Logger logger = LogManager.getLogger(ServerService.class);
+  private static final String SERVER_WITH_ID = "Server with ID";
+  private static final String SERVER_WITH_ID_NOT_FOUND = "Server with ID %d not found.";
   private final AtomicInteger roundRobinIndex = new AtomicInteger(0);
   private final Map<Integer, Server> servers;
 
@@ -40,9 +42,10 @@ public class ServerService {
 
   protected void addServer(Server server) {
     if (servers.containsKey(server.getServerId())) {
-      logger.error("Server with ID {} already exists. Cannot add server.", server.getServerId());
+      logger.error("{} {} already exists. Cannot add server.", SERVER_WITH_ID,
+          server.getServerId());
       throw new IllegalArgumentException(
-          "Server with ID %d already exists.".formatted(server.getServerId()));
+          "%s %d already exists.".formatted(SERVER_WITH_ID, server.getServerId()));
     } else {
       servers.put(server.getServerId(), server);
       logger.info("Server {} added successfully.", server.getServerId());
@@ -54,9 +57,9 @@ public class ServerService {
       servers.remove(server.getServerId());
       logger.info("Server {} removed successfully.", server.getServerId());
     } else {
-      logger.error("Server with ID {} not found. Cannot remove server.", server.getServerId());
+      logger.error("{} {} not found. Cannot remove server.", SERVER_WITH_ID, server.getServerId());
       throw new IllegalArgumentException(
-          "Server with ID %d not found.".formatted(server.getServerId()));
+          SERVER_WITH_ID_NOT_FOUND.formatted(server.getServerId()));
     }
   }
 
@@ -67,7 +70,7 @@ public class ServerService {
           return server;
         })
         .or(() -> {
-          logger.error("Server with ID {} not found.", serverId);
+          logger.error("{} {} not found.", SERVER_WITH_ID, serverId);
           return Optional.empty();
         });
   }
@@ -87,9 +90,9 @@ public class ServerService {
           }
         },
         () -> {
-          logger.error("Server {} not found. Cannot handle the task.", nextServerId);
+          logger.error("{} {} not found. Cannot handle the task.", SERVER_WITH_ID, nextServerId);
           throw new IllegalArgumentException(
-              "Server with ID %d not found.".formatted(nextServerId));
+              SERVER_WITH_ID_NOT_FOUND.formatted(nextServerId));
         }
     );
   }
@@ -103,8 +106,8 @@ public class ServerService {
           logger.info("Task finished by server {}", serverId);
         },
         () -> {
-          logger.error("Server with ID {} not found. Cannot finish task.", serverId);
-          throw new IllegalArgumentException("Server with ID %d not found.".formatted(serverId));
+          logger.error("{} {} not found. Cannot finish task.", SERVER_WITH_ID, serverId);
+          throw new IllegalArgumentException(SERVER_WITH_ID_NOT_FOUND.formatted(serverId));
         }
     );
   }

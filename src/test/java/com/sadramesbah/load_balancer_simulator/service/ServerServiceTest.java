@@ -12,13 +12,11 @@ class ServerServiceTest {
 
   private ServerService serverService;
   private Task task1;
-  private Task task2;
 
   @BeforeEach
   void setUp() {
     serverService = new ServerService();
     task1 = new Task(2, 1, 512, 1000);
-    task2 = new Task(1, 2, 1024, 2000);
   }
 
   @Test
