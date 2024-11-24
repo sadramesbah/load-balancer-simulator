@@ -57,9 +57,7 @@ class ServerTest {
 
   @Test
   void testFinishTaskNotInProcess() {
-    IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-      server.finishTask(task1);
-    });
+    IllegalStateException exception = assertThrows(IllegalStateException.class, () -> server.finishTask(task1));
     assertEquals("Task is not being processed by this server.", exception.getMessage());
   }
 
