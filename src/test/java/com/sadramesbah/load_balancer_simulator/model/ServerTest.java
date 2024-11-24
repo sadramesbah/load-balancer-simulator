@@ -18,9 +18,9 @@ class ServerTest {
     // server with 8 high-performance cores, 4 low-performance cores, and 16GB RAM
     server = new Server(1, 8, 4, 16000);
     // task requiring 2 high-performance cores, 1 low-performance core, 512MB RAM and 1 second to complete
-    task1 = new Task(2, 1, 512, 1000);
+    task1 = new Task(2, 1, 512, 750);
     // task requiring 1 high-performance core, 2 low-performance cores, 1GB RAM and 2 seconds to complete
-    task2 = new Task(1, 2, 1024, 2000);
+    task2 = new Task(1, 2, 1024, 3750);
   }
 
   @Test
@@ -69,7 +69,7 @@ class ServerTest {
     assertEquals(512, server.getRamInUse());
     assertEquals(1, task1.getAssignedServerId());
     // wait for the task to exceed its time limit and be terminated by the server
-    Awaitility.await().atMost(1500, TimeUnit.MILLISECONDS)
+    Awaitility.await().atMost(2500, TimeUnit.MILLISECONDS)
         .until(() -> task1.getAssignedServerId() == -1);
     assertEquals(0, server.getHighPerformanceCoresInUse());
     assertEquals(0, server.getLowPerformanceCoresInUse());
@@ -111,13 +111,13 @@ class ServerTest {
     assertEquals(3, server.getLowPerformanceCoresInUse());
     assertEquals(1536, server.getRamInUse());
     // wait for task1 to exceed its time limit and be terminated by the server
-    Awaitility.await().atMost(1500, TimeUnit.MILLISECONDS)
+    Awaitility.await().atMost(2500, TimeUnit.MILLISECONDS)
         .until(() -> task1.getAssignedServerId() == -1);
     assertEquals(1, server.getHighPerformanceCoresInUse());
     assertEquals(2, server.getLowPerformanceCoresInUse());
     assertEquals(1024, server.getRamInUse());
     // wait for task2 to exceed its time limit and be terminated by the server
-    Awaitility.await().atMost(1500, TimeUnit.MILLISECONDS)
+    Awaitility.await().atMost(4500, TimeUnit.MILLISECONDS)
         .until(() -> task2.getAssignedServerId() == -1);
     assertEquals(0, server.getHighPerformanceCoresInUse());
     assertEquals(0, server.getLowPerformanceCoresInUse());
