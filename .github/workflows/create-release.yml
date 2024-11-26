@@ -48,3 +48,5 @@ jobs:
           tag_name: ${{ env.new_version }}
           release_name: "load-balancer-simulator ${{ env.new_version }}"
           body: ${{ env.release_notes }}
+          draft: false
+          prerelease: false
