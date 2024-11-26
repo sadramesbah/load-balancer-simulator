@@ -36,16 +36,28 @@ jobs:
       - name: Generate release notes
         id: generate_release_notes
         run: |
-          commits=$(git log --pretty=format:"%h %s" $(git describe --tags --abbrev=0)..HEAD)
+          git fetch --tags
+          latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null)
+          if [ -z "$latest_tag" ]; then
+            echo "Error: No valid tags found, but tags are expected. Check your repository's tag setup."
+            exit 1
+          fi
+          commits=$(git log --pretty=format:"- %h %s" $latest_tag..HEAD)
+          if [ -z "$commits" ]; then
+            commits="No new commits since the last release."
+          fi
           echo "release_notes=$commits" >> $GITHUB_ENV
 
       - name: Create new release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v1.1.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ env.new_version }}
           release_name: "load-balancer-simulator ${{ env.new_version }}"
-          body: ${{ env.release_notes }}
+          body: |
+            Release notes for ${{ env.new_version }}
+            
+            ${{ env.release_notes }}
           draft: false
           prerelease: false
