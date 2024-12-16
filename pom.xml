@@ -8,39 +8,51 @@
     <version>3.4.0</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-	<groupId>com.sadramesbah</groupId>
-	<artifactId>load-balancer-simulator</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Load Balancer Simulator</name>
-	<description>An application that simulates load balancing across multiple servers with configurable CPU and RAM</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
-	<properties>
-		<java.version>21</java.version>
-	</properties>
+  <groupId>com.sadramesbah</groupId>
+  <artifactId>load-balancer-simulator</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>Load Balancer Simulator</name>
+  <description>An application that simulates load balancing across multiple servers with configurable CPU and RAM</description>
+  <url/>
+  <licenses>
+    <license/>
+  </licenses>
+  <developers>
+    <developer/>
+  </developers>
+  <scm>
+    <connection/>
+    <developerConnection/>
+    <tag/>
+    <url/>
+  </scm>
+  <properties>
+    <java.version>21</java.version>
+  </properties>
 
   <dependencies>
+
+    <!-- Spring Boot Starter for Thymeleaf templates -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
     </dependency>
 
+    <!-- Spring Web MVC framework for building web applications -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>6.2.1</version> <!-- Update to a version that fixes the "CVE-2024-38828" vulnerability -->
+    </dependency>
+
+    <!-- Spring Boot Starter for building web applications, including RESTful services -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+      <version>3.4.0</version> <!-- Update to a version that fixes the "CVE-2024-38828" vulnerability -->
     </dependency>
 
+    <!-- Spring Boot DevTools for automatic restarts and configurations for development -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
@@ -48,6 +60,7 @@
       <optional>true</optional>
     </dependency>
 
+    <!-- Spring Boot Starter for testing Spring Boot applications -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -60,18 +73,21 @@
       </exclusions>
     </dependency>
 
+    <!-- XMLUnit for testing XML output -->
     <dependency>
       <groupId>org.xmlunit</groupId>
       <artifactId>xmlunit-core</artifactId>
       <version>2.10.0</version>
     </dependency>
 
+    <!-- Log4j core library for logging -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
       <version>2.24.3</version>
     </dependency>
 
+    <!-- Log4j API library for logging -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
@@ -79,13 +95,13 @@
     </dependency>
   </dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
