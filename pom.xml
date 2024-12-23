@@ -31,27 +31,25 @@
   </properties>
 
   <dependencies>
-
-    <!-- Spring Boot Starter for Thymeleaf templates -->
+    <!-- Spring Boot Starter Thymeleaf: Thymeleaf templates support -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
     </dependency>
 
-    <!-- Spring Web MVC framework for building web applications -->
+    <!-- Spring Web MVC: Framework for building web applications -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>6.2.1</version> <!-- Update to a version that fixes the "CVE-2024-38828" vulnerability -->
     </dependency>
 
-    <!-- Spring Boot Starter for building web applications, including RESTful services -->
+    <!-- Spring Boot Starter Web: Building web applications, including RESTful services -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
-    <!-- Spring Boot DevTools for automatic restarts and configurations for development -->
+    <!-- Spring Boot DevTools: Automatic restarts and configurations for development -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
@@ -59,38 +57,25 @@
       <optional>true</optional>
     </dependency>
 
-    <!-- Spring Boot Starter for testing Spring Boot applications -->
+    <!-- Spring Boot Starter Test: Testing Spring Boot applications -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>xmlunit</groupId>
-          <artifactId>xmlunit</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
-    <!-- XMLUnit for testing XML output -->
+    <!-- Logback Core: Logging framework core library -->
     <dependency>
-      <groupId>org.xmlunit</groupId>
-      <artifactId>xmlunit-core</artifactId>
-      <version>2.10.0</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>1.5.13</version>
     </dependency>
 
-    <!-- Log4j core library for logging -->
+    <!-- Logback Classic: Logging framework implementation -->
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>2.24.3</version>
-    </dependency>
-
-    <!-- Log4j API library for logging -->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>2.24.3</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.5.13</version>
     </dependency>
   </dependencies>
 
