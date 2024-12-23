@@ -49,7 +49,6 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>3.4.0</version> <!-- Update to a version that fixes the "CVE-2024-38828" vulnerability -->
     </dependency>
 
     <!-- Spring Boot DevTools for automatic restarts and configurations for development -->
