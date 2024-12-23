@@ -64,14 +64,14 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Logback Core: Logging framework core library -->
+    <!-- Logback Core: updated to the latest version to address "CVE-2024-12798" and "CVE-2024-12801" vulnerabilities -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
       <version>1.5.13</version>
     </dependency>
 
-    <!-- Logback Classic: Logging framework implementation -->
+    <!-- Logback Classic: updated to the latest version to address "CVE-2024-12798" and "CVE-2024-12801" vulnerabilities -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
