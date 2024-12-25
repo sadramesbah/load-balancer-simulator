@@ -29,8 +29,15 @@ jobs:
         run: |
           latest_release=$(cat latest_release.txt)
           IFS='.' read -r -a version_parts <<< "${latest_release#v}"
-          new_patch_version=$((version_parts[2] + 1))
-          new_version="v${version_parts[0]}.${version_parts[1]}.$new_patch_version"
+          major_version=${version_parts[0]}
+          minor_version=${version_parts[1]}
+          patch_version=${version_parts[2]}
+          new_patch_version=$((patch_version + 1))
+          if [ "$new_patch_version" -ge 10 ]; then
+            new_patch_version=0
+            minor_version=$((minor_version + 1))
+          fi
+          new_version="v${major_version}.${minor_version}.${new_patch_version}"
           echo "new_version=$new_version" >> $GITHUB_ENV
 
       - name: Generate release notes
@@ -57,7 +64,7 @@ jobs:
           release_name: "load-balancer-simulator ${{ env.new_version }}"
           body: |
             Release notes for ${{ env.new_version }}
-            
+
             ${{ env.release_notes }}
           draft: false
           prerelease: false
