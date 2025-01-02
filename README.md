@@ -1,4 +1,4 @@
-# 🎛️ Load Balancer Simulator
+# 🎛️ Load Balancer Simulator [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sadramesbah_load-balancer-simulator&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=sadramesbah_load-balancer-simulator)
 
 ## 📖 About
 
